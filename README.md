@@ -1,5 +1,7 @@
 # ERP Inventory System
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 A simple command-line Inventory Management System written in Java that uses MySQL (JDBC) for persistence. This project demonstrates basic product management, stock updates, and recording sales.
 
 > NOTE: This repository contains IntelliJ project files (.idea) and a hard-coded database credential in `src/InventorySystem.java`. Do not use these credentials in production — replace them with secure configuration (environment variables, secrets manager, or a properties file) and remove sensitive data from the repository.
@@ -17,7 +19,7 @@ A simple command-line Inventory Management System written in Java that uses MySQ
 
 ## Requirements
 
-- Java JDK (project .idea shows JDK `25`; the code uses modern switch syntax — JDK 17+ is recommended)
+- Java JDK (project .idea shows JDK `25`; JDK 17+ is recommended)
 - MySQL server (or compatible MariaDB)
 - MySQL Connector/J (JDBC driver)
 
@@ -26,7 +28,11 @@ A simple command-line Inventory Management System written in Java that uses MySQ
 ## Quickstart
 
 1. Clone the repository
+
+   ```bash
    git clone https://github.com/iamajaykr06/Inventory-Management-System-.git
+   cd Inventory-Management-System-
+   ```
 
 2. Prepare the database
 
@@ -97,10 +103,10 @@ A simple command-line Inventory Management System written in Java that uses MySQ
 
 The program runs a simple text menu:
 
-1. Add Product — enter product name, price, and quantity
-2. Update Stock — set a new quantity for a product id
-3. Record Sale — record a sale (product id + quantity) and decrement product quantity
-4. Inventory Report — list products and quantities
+1. Add Product — enter product name, price, and quantity  
+2. Update Stock — set a new quantity for a product id  
+3. Record Sale — record a sale (product id + quantity) and decrement product quantity  
+4. Inventory Report — list products and quantities  
 5. Exit
 
 ---
@@ -120,8 +126,8 @@ If you want, I can help implement any of the improvements above (transactions, v
 
 ## Project structure
 
-- src/InventorySystem.java — main application
-- .idea/ — IntelliJ project files
+- src/InventorySystem.java — main application  
+- .idea/ — IntelliJ project files  
 - .gitignore — ignored files list
 
 ---
@@ -130,8 +136,8 @@ If you want, I can help implement any of the improvements above (transactions, v
 
 Contributions are welcome. Suggested workflow:
 
-- Fork the repo
-- Create a feature branch
+- Fork the repo  
+- Create a feature branch  
 - Open a pull request with a clear description of changes
 
 If you plan to submit changes that require DB schema changes, include the necessary SQL in the PR description.
@@ -140,10 +146,15 @@ If you plan to submit changes that require DB schema changes, include the necess
 
 ## License
 
-No license specified. Add a LICENSE file to make this repository open-source under your chosen terms.
+This project is available under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
 ---
 
 ## Contact
 
-If you'd like help setting this up or want improvements, open an issue or contact the repository owner.
+- Email: [iamajayk.r06@gmail.com](mailto:iamajayk.r06@gmail.com)  
+- LinkedIn: [iamajaykr](https://linkedin.com/in/iamajaykr/)
+
+---
+
+If you'd like, I can open a pull request that adds these files to your repository, or I can make additional README changes (examples, screenshots, or moving DB credentials into a config file).  
