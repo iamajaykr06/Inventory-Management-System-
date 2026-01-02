@@ -1,3 +1,5 @@
+// Copyright (c) 2026 iamajaykr06
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 import java.sql.*;
 import java.util.Scanner;
 
