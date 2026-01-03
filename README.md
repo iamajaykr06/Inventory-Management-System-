@@ -1,160 +1,137 @@
-# ERP Inventory System
+# Inventory Management System (CLI-Based)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-
-A simple command-line Inventory Management System written in Java that uses MySQL (JDBC) for persistence. This project demonstrates basic product management, stock updates, and recording sales.
-
-> NOTE: This repository contains IntelliJ project files (.idea) and a hard-coded database credential in `src/InventorySystem.java`. Do not use these credentials in production — replace them with secure configuration (environment variables, secrets manager, or a properties file) and remove sensitive data from the repository.
-
----
+A Java-based Command Line Inventory Management System that performs full CRUD operations on products with MySQL database integration using JDBC.  
+The system follows a DAO-based layered architecture, ensures transactional consistency, and supports real-world inventory operations.
 
 ## Features
 
-- Add products (name, price, quantity)
-- Update product stock
-- Record sales (reduces product quantity)
-- Print a simple inventory report
+- Add new products to inventory
+- View complete inventory list
+- Update existing product details (name, price, quantity)
+- Delete products from inventory
+- Record product sales with transaction management
+- Automatic stock updates after sales
+- Input validation and stock availability checks
+- Persistent data storage using MySQL
 
----
+## Tech Stack
 
-## Requirements
+- Language: Java
+- Database: MySQL
+- Database Access: JDBC
+- Architecture: DAO (Data Access Object)
+- Interface: Command Line Interface (CLI)
 
-- Java JDK (project .idea shows JDK `25`; JDK 17+ is recommended)
-- MySQL server (or compatible MariaDB)
-- MySQL Connector/J (JDBC driver)
+## Project Structure
 
----
+```
+inventory-management-system/
+│
+├── src/
+│   ├── dao/
+│   │   ├── ProductDAO.java
+│   │   └── SalesDAO.java
+│   │
+│   ├── model/
+│   │   └── Product.java
+│   │
+│   ├── util/
+│   │   └── DBConnection.java
+│   │
+│   └── InventorySystem.java
+│
+└── README.md 
+```
+## Database Schema
 
-## Quickstart
+### Products Table
+```
+CREATE TABLE products (
+product_id INT PRIMARY KEY AUTO_INCREMENT,
+name VARCHAR(100) NOT NULL,
+price DOUBLE NOT NULL,
+quantity INT NOT NULL
+); 
+```
 
-1. Clone the repository
+### Sales Table
+```
+CREATE TABLE sales (
+sale_id INT PRIMARY KEY AUTO_INCREMENT,
+product_id INT,
+quantity INT,
+sale_date DATE,
+FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+```
+## CRUD Operations Mapping
 
-   ```bash
-   git clone https://github.com/iamajaykr06/Inventory-Management-System-.git
-   cd Inventory-Management-System-
-   ```
+| Operation   | Description |
+|------------|-------------|
+| Create     | Add new product |
+| Read       | View inventory / get product by ID |
+| Update     | Update product details or stock |
+| Delete     | Remove product |
+| Transaction| Record sale and update stock atomically |
 
-2. Prepare the database
+## How to Run the Project
 
-   Create a database named `erp_inventory` and the required tables. Example SQL:
+### Prerequisites
 
-   ```sql
-   CREATE DATABASE IF NOT EXISTS erp_inventory;
-   USE erp_inventory;
+- Java JDK 8 or higher
+- MySQL Server
+- IntelliJ IDEA (recommended)
 
-   CREATE TABLE IF NOT EXISTS products (
-     product_id INT AUTO_INCREMENT PRIMARY KEY,
-     name VARCHAR(255) NOT NULL,
-     price DOUBLE NOT NULL,
-     quantity INT NOT NULL DEFAULT 0
-   );
+### Steps
 
-   CREATE TABLE IF NOT EXISTS sales (
-     sale_id INT AUTO_INCREMENT PRIMARY KEY,
-     product_id INT NOT NULL,
-     quantity INT NOT NULL,
-     sale_date DATE NOT NULL,
-     FOREIGN KEY (product_id) REFERENCES products(product_id)
-   );
-   ```
+1. Clone the repository  
+   git clone <your-github-repository-link>
 
-3. Add MySQL Connector/J to the classpath
+2. Open the project in IntelliJ IDEA
 
-   - Download the Connector/J (.jar) from: https://dev.mysql.com/downloads/connector/j/
-   - Place the jar somewhere accessible (e.g., `lib/mysql-connector-j-<version>.jar`)
+3. Create the database  
+   CREATE DATABASE erp_inventory;
 
-4. Configure DB credentials
+4. Run the SQL schema provided above
 
-   By default the code uses the constants in `src/InventorySystem.java`:
+5. Update database credentials in  
+   src/util/DBConnection.java
 
-   ```java
-   static final String URL = "jdbc:mysql://localhost:3306/erp_inventory";
-   static final String USER = "root";
-   static final String PASS = "Ajay@1906";
-   ```
+6. Mark src as Sources Root in IntelliJ
 
-   Replace these with your own credentials or modify the code to read from environment variables or a configuration file.
+7. Run InventorySystem.java
 
-   Important: Do not commit real credentials. Remove or update any hard-coded secrets.
+## Sample CLI Menu
 
-5. Compile and run
+1. Add Product
+2. View Inventory
+3. Update Product
+4. Delete Product
+5. Record Sale
+6. Exit
 
-   From the project root:
+## Key Concepts Demonstrated
 
-   - On macOS / Linux:
+- JDBC connectivity
+- PreparedStatements
+- DAO-based architecture
+- Object-Oriented Programming (OOP)
+- Transaction management (commit & rollback)
+- Input validation and business logic separation
 
-     ```bash
-     javac -cp "lib/mysql-connector-j-<version>.jar" -d out src/InventorySystem.java
-     java -cp "out:lib/mysql-connector-j-<version>.jar" InventorySystem
-     ```
+## Future Improvements
 
-   - On Windows (PowerShell / CMD):
+- User authentication and roles
+- Low-stock alerts
+- Inventory reports export
+- Migration to Spring Boot REST API
 
-     ```powershell
-     javac -cp "lib\mysql-connector-j-<version>.jar" -d out src\InventorySystem.java
-     java -cp "out;lib\mysql-connector-j-<version>.jar" InventorySystem
-     ```
+## Author
 
-   Or open the project in IntelliJ IDEA (the project includes `.idea` files). Make sure to set the project SDK to your installed JDK and add the connector jar as a library or dependency.
-
----
-
-## Usage
-
-The program runs a simple text menu:
-
-1. Add Product — enter product name, price, and quantity  
-2. Update Stock — set a new quantity for a product id  
-3. Record Sale — record a sale (product id + quantity) and decrement product quantity  
-4. Inventory Report — list products and quantities  
-5. Exit
-
----
-
-## Known limitations & suggested improvements
-
-- Credentials are hard-coded. Move to environment variables or a configuration file.
-- No input validation — entering invalid IDs, negative quantities, or non-numeric input may throw exceptions.
-- No transaction handling — recording a sale and updating stock should be done in a transaction to prevent inconsistencies.
-- No check for available stock before recording a sale; negative inventory is currently possible.
-- No logging or unit tests.
-- Single-user CLI only — no concurrency handling or web UI.
-
-If you want, I can help implement any of the improvements above (transactions, validation, config, or a GUI/web frontend).
-
----
-
-## Project structure
-
-- src/InventorySystem.java — main application  
-- .idea/ — IntelliJ project files  
-- .gitignore — ignored files list
-
----
-
-## Contributing
-
-Contributions are welcome. Suggested workflow:
-
-- Fork the repo  
-- Create a feature branch  
-- Open a pull request with a clear description of changes
-
-If you plan to submit changes that require DB schema changes, include the necessary SQL in the PR description.
-
----
+Ajay Kumar  
+GitHub: https://github.com/iamajaykr06  
+LinkedIn: https://www.linkedin.com/in/iamajaykr
 
 ## License
 
-This project is available under the MIT License. See the [LICENSE](./LICENSE) file for details.
-
----
-
-## Contact
-
-- Email: [iamajayk.r06@gmail.com](mailto:iamajayk.r06@gmail.com)  
-- LinkedIn: [iamajaykr](https://linkedin.com/in/iamajaykr/)
-
----
-
-If you'd like, I can open a pull request that adds these files to your repository, or I can make additional README changes (examples, screenshots, or moving DB credentials into a config file).  
+This project is licensed under the MIT License.
