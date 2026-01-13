@@ -1,137 +1,122 @@
-# Inventory Management System (CLI-Based)
+# Inventory Management System (Java)
+## Project Overview
 
-A Java-based Command Line Inventory Management System that performs full CRUD operations on products with MySQL database integration using JDBC.  
-The system follows a DAO-based layered architecture, ensures transactional consistency, and supports real-world inventory operations.
+This is a Core Java–based Inventory Management System that demonstrates how to manage products and sales using a layered architecture and JDBC for database interaction.
 
-## Features
+The project focuses on:
 
-- Add new products to inventory
-- View complete inventory list
-- Update existing product details (name, price, quantity)
-- Delete products from inventory
-- Record product sales with transaction management
-- Automatic stock updates after sales
-- Input validation and stock availability checks
-- Persistent data storage using MySQL
+* Clean separation of concerns (DAO, Model, Utility)
+* Database-driven operations using JDBC
+* Real-world inventory and sales logic
+* Maintainable and readable Java project structure
+
+This is not a web application. It is a console-based Java application.
 
 ## Tech Stack
-
-- Language: Java
-- Database: MySQL
-- Database Access: JDBC
-- Architecture: DAO (Data Access Object)
-- Interface: Command Line Interface (CLI)
+* **Java (JDK 8+)**
+* **MySQL**
+* **JDBC (MySQL Connector/J)**
+* **IDE:** IntelliJ IDEA / Eclipse (any Java IDE)
 
 ## Project Structure
-
 ```
-inventory-management-system/
+Inventory-Management-System/
 │
 ├── src/
 │   ├── dao/
-│   │   ├── ProductDAO.java
-│   │   └── SalesDAO.java
+│   │   ├── ProductDAO.java      # Product database operations
+│   │   └── SalesDAO.java        # Sales & inventory update logic
 │   │
 │   ├── model/
-│   │   └── Product.java
+│   │   └── Product.java         # Product entity / model
 │   │
 │   ├── util/
-│   │   └── DBConnection.java
+│   │   └── DBConnection.java    # JDBC database connection utility
 │   │
-│   └── InventorySystem.java
+│   └── InventorySystem.java     # Main application entry point
 │
-└── README.md 
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
-## Database Schema
 
-### Products Table
+## Setup Instructions
+### 1️. Clone the repository
+```
+git clone https://github.com/iamajaykr06/Inventory-Management-System-.git
+cd Inventory-Management-System-
+```
+
+### 2. Database Setup (MySQL)
+
+Create database:
+
+```
+CREATE DATABASE inventory_db;
+```
+Create product table:
 ```
 CREATE TABLE products (
-product_id INT PRIMARY KEY AUTO_INCREMENT,
+id INT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
-price DOUBLE NOT NULL,
-quantity INT NOT NULL
-); 
-```
-
-### Sales Table
-```
-CREATE TABLE sales (
-sale_id INT PRIMARY KEY AUTO_INCREMENT,
-product_id INT,
-quantity INT,
-sale_date DATE,
-FOREIGN KEY (product_id) REFERENCES products(product_id)
+quantity INT NOT NULL,
+price DOUBLE NOT NULL
 );
 ```
-## CRUD Operations Mapping
+Create sales table:
 
-| Operation   | Description |
-|------------|-------------|
-| Create     | Add new product |
-| Read       | View inventory / get product by ID |
-| Update     | Update product details or stock |
-| Delete     | Remove product |
-| Transaction| Record sale and update stock atomically |
+```
+CREATE TABLE sales (
+id INT AUTO_INCREMENT PRIMARY KEY,
+product_id INT NOT NULL,
+quantity_sold INT NOT NULL,
+sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (product_id) REFERENCES products(id)
+);
+```
+## Dependencies
 
-## How to Run the Project
+This project uses JDBC for database connectivity.
 
-### Prerequisites
+**Required:**
 
-- Java JDK 8 or higher
-- MySQL Server
-- IntelliJ IDEA (recommended)
+* MySQL Connector/J (JDBC Driver)
 
-### Steps
+**Important Note**
+This project does not use Maven or Gradle.
+The JDBC driver must be manually added to the project classpath via your IDE.
 
-1. Clone the repository  
-   git clone <your-github-repository-link>
+## Run the Application
+1. Open the project in your Java IDE
+2. Ensure MySQL is running
+3. Update database credentials in:
+```
+src/util/DBConnection.java
+```
+4. Run:
+```
+InventorySystem.java
+```
 
-2. Open the project in IntelliJ IDEA
+## Features Implemented
+* Add products to inventory
+* View available products
+* Update product quantity after sales
+* Record sales transactions
+* JDBC-based database interaction
+* Clean DAO pattern usage
 
-3. Create the database  
-   CREATE DATABASE erp_inventory;
+## Learning Outcomes
+* JDBC connection handling
+* DAO design pattern
+* SQL integration with Java
+* Inventory & sales logic
+* Clean Java project structuring
 
-4. Run the SQL schema provided above
+## Notes
+* This is a Core Java learning project
+* No frameworks are used
+* Dependency management is manual by design
 
-5. Update database credentials in  
-   src/util/DBConnection.java
-
-6. Mark src as Sources Root in IntelliJ
-
-7. Run InventorySystem.java
-
-## Sample CLI Menu
-
-1. Add Product
-2. View Inventory
-3. Update Product
-4. Delete Product
-5. Record Sale
-6. Exit
-
-## Key Concepts Demonstrated
-
-- JDBC connectivity
-- PreparedStatements
-- DAO-based architecture
-- Object-Oriented Programming (OOP)
-- Transaction management (commit & rollback)
-- Input validation and business logic separation
-
-## Future Improvements
-
-- User authentication and roles
-- Low-stock alerts
-- Inventory reports export
-- Migration to Spring Boot REST API
-
-## Author
-
-Ajay Kumar  
-GitHub: https://github.com/iamajaykr06  
-LinkedIn: https://www.linkedin.com/in/iamajaykr
-
-## License
-
-This project is licensed under the MIT License.
+### Author
+Ajay Kumar
